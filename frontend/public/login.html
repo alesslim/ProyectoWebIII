@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Login UI</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        dmSans: ["DM Sans", "sans-serif"],
+                    },
+                    colors: {
+                        orange: {
+                            500: '#f97316',
+                            600: '#ea580c',
+                        }
+                    },
+                    keyframes: {
+                        "hidde-left": {
+                            "0%": {
+                                left: "0%",
+                                opacity: "1",
+                            },
+                            "50%": {
+                                left: "-100%",
+                                opacity: "0",
+                            },
+                            "100%": {
+                                left: "-200%",
+                                opacity: "0",
+                            },
+                        },
+                        "hidde-right": {
+                            "0%": {
+                                left: "0%",
+                                opacity: "1",
+                            },
+                            "50%": {
+                                left: "100%",
+                                opacity: "0",
+                            },
+                            "100%": {
+                                left: "200%",
+                                opacity: "0",
+                            },
+                        },
+                        "appear-left": {
+                            "0%": {
+                                left: "-200%",
+                                opacity: "0",
+                            },
+                            "50%": {
+                                left: "-100%",
+                                opacity: "0",
+                            },
+                            "100%": {
+                                left: "0%",
+                                opacity: "1",
+                            },
+                        },
+                        "appear-right": {
+                            "0%": {
+                                left: "200%",
+                                opacity: "0",
+                            },
+                            "50%": {
+                                left: "100%",
+                                opacity: "0",
+                            },
+                            "100%": {
+                                left: "0%",
+                                opacity: "1",
+                            },
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body
+    class="bg-orange-100 bg-[url('../src/assets/fondo4.gif')] bg-cover bg-center bg-no-repeat bg-fixed flex font-semibold justify-center items-center h-screen w-screen">
+
+    <article
+        class="bg-white p-10 py-16 rounded-xl shadow-2xl grid grid-cols-[300px_300px] min-w-[800px] justify-between relative overflow-hidden">
+
+        <div class="absolute bottom-0 bg-orange-500 w-[50%] h-[200%] rotate-[-180deg] right-[0] orangeBlock">
+        </div>
+
+        <!-- LOGIN -->
+        <form class="grid gap-6 relative z-10 row-start-1 col-start-1 loginForm" id="loginForm">
+            <h2
+                class="text-2xl font-bold after:block after:w-10 after:h-1 after:bg-orange-500 after:rounded-full after:mx-auto after:mt-1 text-center mb-2">
+                INICIAR SESION
+            </h2>
+
+            <fieldset class="relative border-b-2 border-orange-500 pb-2 flex items-center">
+                <input class="outline-none peer flex-1 bg-transparent" type="text" id="username" placeholder=" " />
+                <label
+                    class="absolute left-0 peer-placeholder-shown:translate-y-0 -translate-y-6 peer-focus:text-orange-600 transition-all"
+                    for="username">Usuario</label>
+                <i class="bx bxs-user text-orange-500"></i>
+            </fieldset>
+
+            <fieldset class="relative border-b-2 border-orange-500 pb-2 flex items-center">
+                <input class="outline-none peer flex-1 bg-transparent" type="password" id="password" placeholder=" " />
+                <label
+                    class="absolute left-0 peer-placeholder-shown:translate-y-0 -translate-y-6 peer-focus:text-orange-600 transition-all"
+                    for="password">Contraseña</label>
+                <i class="bx bxs-lock-alt text-orange-500"></i>
+            </fieldset>
+
+            <!-- CAPTCHA -->
+            <fieldset class="relative border-2 border-gray-300 rounded-lg p-3 bg-gray-50">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="text-sm font-medium">Verificación de seguridad</label>
+                    <button type="button" class="text-xs text-orange-600 hover:text-orange-800 refresh-captcha"
+                        onclick="generateCaptcha()">
+                        <i class="bx bx-refresh"></i> Actualizar
+                    </button>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div id="captcha-code"
+                        class="flex-1 bg-white border border-gray-300 rounded p-2 text-center font-mono text-lg font-bold tracking-wider select-none text-orange-600">
+                    </div>
+                    <input id="captcha-input"
+                        class="flex-1 outline-none border-b-2 border-orange-500 bg-transparent text-center" type="text"
+                        placeholder="Ingresa el código" maxlength="6" required />
+                </div>
+            </fieldset>
+
+            <button type="submit"
+                class="bg-orange-500 rounded-full text-white py-2 hover:scale-105 transition-transform hover:bg-orange-600">
+                INICIAR SESION
+            </button>
+
+            <span class="font-normal">
+                Aún no tienes cuenta?
+                <button type="button" class="font-bold signUpBtn text-orange-600 hover:text-orange-800">
+                    REGISTRO
+                </button>
+            </span>
+        </form>
+
+        <!-- TEXTO DERECHA (LOGIN) -->
+        <div
+            class="text-end max-w-[250px] ml-auto flex flex-col justify-center gap-4 text-white relative z-10 row-start-1 col-start-2 rightText">
+            <h3 class="text-4xl uppercase font-bold">BIENVENIDOS!!
+                A NUESTRA PAGINA
+            </h3>
+            <img src="../src/assets/saludo.gif" alt="">
+            <p class="max-w-[200px] ml-auto">
+                Mucho gusto, espero que le sea de su agrado nuestros libros.
+            </p>
+        </div>
+
+        <!-- TEXTO IZQUIERDA (REGISTRO) -->
+        <div
+            class="text-start max-w-[250px] mr-auto flex flex-col justify-center gap-4 text-white relative z-10 row-start-1 col-start-1 leftText invisible">
+            <h3 class="text-4xl uppercase font-bold">REGÍSTRATE Y PRUEBA NUESTROS PRODUCTOS</h3>
+            <img src="../src/assets/saludo2.gif" alt="">
+            <p class="max-w-[200px] mr-auto">
+                Nuestros productos son originales y de buena calidad, tenemos variedad de libros.
+            </p>
+        </div>
+
+        <!-- REGISTRO -->
+        <form class="grid gap-10 relative z-10 row-start-1 col-start-2 signUpForm invisible" id="signUpForm">
+            <h2
+                class="text-2xl font-bold after:block after:w-10 after:h-1 after:bg-orange-500 after:rounded-full after:mx-auto after:mt-1 text-center mb-2">
+                REGISTRO
+            </h2>
+
+            <fieldset class="relative border-b-2 border-orange-500 pb-2 flex items-center">
+                <input class="outline-none peer flex-1 bg-transparent" type="text" id="reg-username" placeholder=" " />
+                <label
+                    class="absolute left-0 peer-placeholder-shown:translate-y-0 -translate-y-6 peer-focus:text-orange-600 transition-all"
+                    for="reg-username">Usuario</label>
+                <i class="bx bxs-user text-orange-500"></i>
+            </fieldset>
+
+            <fieldset class="relative border-b-2 border-orange-500 pb-2 flex items-center">
+                <input class="outline-none peer flex-1 bg-transparent" type="email" id="reg-email" placeholder=" " />
+                <label
+                    class="absolute left-0 peer-placeholder-shown:translate-y-0 -translate-y-6 peer-focus:text-orange-600 transition-all"
+                    for="reg-email">Email</label>
+                <i class="bx bxs-user text-orange-500"></i>
+            </fieldset>
+
+            <fieldset class="relative border-b-2 border-orange-500 pb-2 flex items-center">
+                <input class="outline-none peer flex-1 bg-transparent" type="password" id="reg-password"
+                    placeholder=" " />
+                <label
+                    class="absolute left-0 peer-placeholder-shown:translate-y-0 -translate-y-6 peer-focus:text-orange-600 transition-all"
+                    for="reg-password">Contraseña</label>
+                <i class="bx bxs-lock-alt text-orange-500"></i>
+
+                <!-- Niveles de seguridad -->
+                <div class="absolute -bottom-4 left-0 right-0 flex gap-1">
+                    <div class="h-1 flex-1 bg-gray-300 rounded-full level-bar" data-level="1"></div>
+                    <div class="h-1 flex-1 bg-gray-300 rounded-full level-bar" data-level="2"></div>
+                    <div class="h-1 flex-1 bg-gray-300 rounded-full level-bar" data-level="3"></div>
+                </div>
+
+                <!-- Texto del nivel -->
+                <div class="absolute -bottom-8 left-0 text-xs level-text text-gray-500"></div>
+            </fieldset>
+
+            <button id="register-btn"
+                class="bg-gray-400 rounded-full text-white py-2 transition-transform cursor-not-allowed" disabled>
+                REGISTRARSE
+            </button>
+
+            <span class="font-normal">
+                Ya creaste tu cuenta?
+                <button type="button" class="font-bold loginBtn text-orange-600 hover:text-orange-800">INICIAR
+                    SESIÓN</button>
+            </span>
+        </form>
+    </article>
+
+    <script>
+        // ===========================
+        // CAPTCHA
+        // ===========================
+        function generateCaptcha() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('captcha-code').textContent = result;
+        }
+
+        // ===========================
+        // FORTALEZA DE CONTRASEÑA
+        // ===========================
+        function verificarSeguridadContrasena(password) {
+            const bars = document.querySelectorAll('.level-bar');
+            const text = document.querySelector('.level-text');
+            const registerBtn = document.getElementById('register-btn');
+
+            let strength = 0;
+            let color = 'gray';
+            let message = '';
+
+            if (password.length >= 6) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            if (password.length === 0) {
+                strength = 0;
+                color = 'gray';
+                message = '';
+            } else if (strength <= 1) {
+                color = 'red';
+                message = 'Débil';
+            } else if (strength === 2) {
+                color = 'yellow';
+                message = 'Medio';
+            } else if (strength >= 3) {
+                color = 'green';
+                message = 'Fuerte';
+            }
+
+            bars.forEach((bar, index) => {
+                if (index < strength) {
+                    if (color === 'red') bar.className = 'h-1 flex-1 bg-red-500 rounded-full level-bar';
+                    else if (color === 'yellow') bar.className = 'h-1 flex-1 bg-yellow-500 rounded-full level-bar';
+                    else if (color === 'green') bar.className = 'h-1 flex-1 bg-green-500 rounded-full level-bar';
+                    else bar.className = 'h-1 flex-1 bg-gray-300 rounded-full level-bar';
+                } else {
+                    bar.className = 'h-1 flex-1 bg-gray-300 rounded-full level-bar';
+                }
+            });
+
+            text.textContent = message;
+            if (color === 'red') text.className = 'absolute -bottom-8 left-0 text-xs level-text text-red-500';
+            else if (color === 'yellow') text.className = 'absolute -bottom-8 left-0 text-xs level-text text-yellow-500';
+            else if (color === 'green') text.className = 'absolute -bottom-8 left-0 text-xs level-text text-green-500';
+            else text.className = 'absolute -bottom-8 left-0 text-xs level-text text-gray-500';
+
+            if (password.length >= 6) {
+                registerBtn.className = 'bg-orange-500 rounded-full text-white py-2 hover:scale-105 transition-transform hover:bg-orange-600 cursor-pointer';
+                registerBtn.disabled = false;
+            } else {
+                registerBtn.className = 'bg-gray-400 rounded-full text-white py-2 transition-transform cursor-not-allowed';
+                registerBtn.disabled = true;
+            }
+        }
+
+        document.getElementById('reg-password').addEventListener('input', function (e) {
+            verificarSeguridadContrasena(e.target.value);
+        });
+
+        window.onload = generateCaptcha;
+
+        // ===========================
+        // CONEXIÓN CON BACKEND
+        // ===========================
+        async function registrarUsuario(username, email, password) {
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    return { success: true, data: data };
+                } else {
+                    return { success: false, error: data.error };
+                }
+
+            } catch (error) {
+                console.error(error);
+                return { success: false, error: 'Error de conexión con el servidor' };
+            }
+        }
+
+        async function iniciarSesion(username, password) {
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    return { success: true, data: data };
+                } else {
+                    return { success: false, error: data.error };
+                }
+
+            } catch (error) {
+                console.error(error);
+                return { success: false, error: 'Error de conexión' };
+            }
+        }
+
+        // ===========================
+        // FORMULARIO REGISTRO
+        // ===========================
+        document.getElementById('signUpForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+
+            if (password.length < 6) {
+                alert('La contraseña debe tener al menos 6 caracteres');
+                return;
+            }
+
+            const registerBtn = document.getElementById('register-btn');
+            const originalText = registerBtn.textContent;
+            registerBtn.textContent = 'Registrando...';
+            registerBtn.disabled = true;
+
+            const resultado = await registrarUsuario(username, email, password);
+
+            registerBtn.textContent = originalText;
+            registerBtn.disabled = false;
+
+            if (resultado.success) {
+                alert('¡Registro exitoso! Tu usuario ha sido guardado en la base de datos.\n\nAhora puedes iniciar sesión.');
+
+                document.querySelector('.loginBtn').click();
+
+                document.getElementById('reg-username').value = '';
+                document.getElementById('reg-email').value = '';
+                document.getElementById('reg-password').value = '';
+
+                document.querySelectorAll('.level-bar').forEach(bar => {
+                    bar.className = 'h-1 flex-1 bg-gray-300 rounded-full level-bar';
+                });
+                document.querySelector('.level-text').textContent = '';
+
+            } else {
+                alert(`Error: ${resultado.error || 'Error en el registro'}`);
+            }
+        });
+
+        // ===========================
+        // FORMULARIO LOGIN
+        // ===========================
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const captchaCodigo = document.getElementById('captcha-code').textContent;
+            const textoCaptcha = document.getElementById('captcha-input').value;
+
+            if (textoCaptcha !== captchaCodigo) {
+                alert('El código CAPTCHA es incorrecto');
+                generateCaptcha();
+                return;
+            }
+
+            const loginBtn = this.querySelector('button[type="submit"]');
+            const originalText = loginBtn.textContent;
+            loginBtn.textContent = 'Iniciando sesión...';
+            loginBtn.disabled = true;
+
+            const resultado = await iniciarSesion(username, password);
+
+            loginBtn.textContent = originalText;
+            loginBtn.disabled = false;
+
+            if (resultado.success) {
+                alert('¡Login exitoso! Redirigiendo...');
+
+                localStorage.setItem('user', JSON.stringify(resultado.data.user));
+                localStorage.setItem('token', resultado.data.token || 'token-simulado');
+
+                window.top.location.href = 'http://localhost:5173/coleccion';
+
+            } else {
+                alert(`Error: ${resultado.error || 'Error en el login'}`);
+                generateCaptcha();
+            }
+        });
+
+        // ===========================
+        // ANIMACIONES
+        // ===========================
+        const orangeBlock = document.querySelector(".orangeBlock");
+        const loginFormEl = document.querySelector(".loginForm");
+        const signUpFormEl = document.querySelector(".signUpForm");
+        const rightText = document.querySelector(".rightText");
+        const leftText = document.querySelector(".leftText");
+
+        const loginBtn = document.querySelector(".loginBtn");
+        const signUpBtn = document.querySelector(".signUpBtn");
+
+        signUpBtn.addEventListener("click", () => {
+            resetAnimations();
+
+            orangeBlock.classList.remove("left-[100%]", "translate-x-[-100%]");
+            orangeBlock.classList.add("left-[0]", "translate-x-[0]");
+
+            signUpFormEl.classList.remove("invisible");
+            leftText.classList.remove("invisible");
+
+            loginFormEl.classList.add("animate-[hidde-left_0.5s_linear_forwards]");
+            rightText.classList.add("animate-[hidde-right_0.5s_linear_forwards]");
+
+            leftText.classList.add("animate-[appear-left_0.5s_linear_forwards]");
+            signUpFormEl.classList.add("animate-[appear-right_0.5s_linear_forwards]");
+
+            setTimeout(() => {
+                rightText.classList.add("invisible");
+                loginFormEl.classList.add("invisible");
+            }, 500);
+        });
+
+        loginBtn.addEventListener("click", () => {
+            resetAnimations();
+
+            orangeBlock.classList.remove("left-[0]", "translate-x-[0]");
+            orangeBlock.classList.add("left-[100%]", "translate-x-[-100%]");
+
+            rightText.classList.remove("invisible");
+            loginFormEl.classList.remove("invisible");
+
+            leftText.classList.add("animate-[hidde-left_0.5s_linear_forwards]");
+            signUpFormEl.classList.add("animate-[hidde-right_0.5s_linear_forwards]");
+
+            loginFormEl.classList.add("animate-[appear-left_0.5s_linear_forwards]");
+            rightText.classList.add("animate-[appear-right_0.5s_linear_forwards]");
+
+            setTimeout(() => {
+                signUpFormEl.classList.add("invisible");
+                leftText.classList.add("invisible");
+            }, 500);
+        });
+
+        function resetAnimations() {
+            loginFormEl.classList.remove(
+                "animate-[hidde-left_0.5s_linear_forwards]",
+                "animate-[appear-left_0.5s_linear_forwards]"
+            );
+            signUpFormEl.classList.remove(
+                "animate-[hidde-right_0.5s_linear_forwards]",
+                "animate-[appear-right_0.5s_linear_forwards]"
+            );
+            rightText.classList.remove(
+                "animate-[hidde-right_0.5s_linear_forwards]",
+                "animate-[appear-right_0.5s_linear_forwards]"
+            );
+            leftText.classList.remove(
+                "animate-[hidde-left_0.5s_linear_forwards]",
+                "animate-[appear-left_0.5s_linear_forwards]"
+            );
+
+            void loginFormEl.offsetWidth;
+            void signUpFormEl.offsetWidth;
+            void rightText.offsetWidth;
+            void leftText.offsetWidth;
+        }
+    </script>
+</body>
+
+</html>
